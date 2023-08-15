@@ -20,7 +20,7 @@ public class CustomUserRepository {
         return ((((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            predicates.add(criteriaBuilder.equal(root.get("isSuperAdmin"), false));
+//            predicates.add(criteriaBuilder.equal(root.get("isSuperAdmin"), false));
             if(dateFrom != null && dateTo != null){
                 predicates.add(criteriaBuilder.between(root.get("createdDate"), dateFrom, dateTo));
             }
@@ -45,9 +45,9 @@ public class CustomUserRepository {
 //            if (StringUtils.hasText(request.getRoleId())) {
 //                predicates.add(criteriaBuilder.like(root.get("role"),"%" + request.getRoleId()+"%"));
 //            }
-            if(StringUtils.hasText(request.getServiceId())){
-                predicates.add(criteriaBuilder.like(root.get("services"),"%" + request.getServiceId()+"%"));
-            }
+//            if(StringUtils.hasText(request.getServiceId())){
+//                predicates.add(criteriaBuilder.like(root.get("services"),"%" + request.getServiceId()+"%"));
+//            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         })));
     }

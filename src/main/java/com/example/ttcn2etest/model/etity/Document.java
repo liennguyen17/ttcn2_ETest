@@ -31,7 +31,7 @@ public class Document {
     @NotBlank
     @Size(max = 5000)
     private String content;
-
+    @Size(max = 500)
     private String file;
     @Size(max = 500)
     private String image;

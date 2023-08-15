@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/service")
-public class ServiceController extends BaseController{
+public class ServiceController extends BaseController {
     private final StudyService studyService;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -30,57 +30,59 @@ public class ServiceController extends BaseController{
     }
 
     @GetMapping("/all")
-    ResponseEntity<?> getAllService(){
-        try{
+    ResponseEntity<?> getAllService() {
+        try {
             List<ServiceDTO> response = studyService.getAllService();
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id){
+    ResponseEntity<?> getById(@PathVariable Long id) {
         ServiceDTO response = studyService.getByIdService(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
-    ResponseEntity<?> creatService(@Validated @RequestBody ServiceRequest request){
+    ResponseEntity<?> creatService(@Validated @RequestBody ServiceRequest request) {
         ServiceDTO response = studyService.createService(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateService(@Validated @RequestBody ServiceRequest request,
-                                    @PathVariable("id") Long id){
+                                    @PathVariable("id") Long id) {
         ServiceDTO response = studyService.updateService(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteById(@PathVariable Long id){
+    ResponseEntity<?> deleteById(@PathVariable Long id) {
         ServiceDTO response = studyService.deleteByIdService(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all")
-    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids) {
+        try {
             List<ServiceDTO> response = studyService.deleteAllIdService(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @PostMapping("/filter")
     public ResponseEntity<?> filter(@Validated @RequestBody FilterServiceRequest request) throws ParseException {
+        BigDecimal minPrice = request.getMinPrice();
+        BigDecimal maxPrice = request.getMaxPrice();
         Page<Service> servicePage = studyService.filterService(
                 request,
                 !Strings.isEmpty(request.getDateFrom()) ? MyUtils.convertDateFromString(request.getDateFrom(), DateTimeConstant.DATE_FORMAT) : null,
                 !Strings.isEmpty(request.getDateTo()) ? MyUtils.convertDateFromString(request.getDateTo(), DateTimeConstant.DATE_FORMAT) : null,
-                request.getMaxPrice(), request.getMinPrice()
+                minPrice, maxPrice
         );
         List<ServiceDTO> serviceDTOS = servicePage.getContent().stream().map(
                 service -> modelMapper.map(service, ServiceDTO.class)

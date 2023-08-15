@@ -15,8 +15,8 @@ public interface SlideService {
     SlideDTO getById(Long id);
     SlideDTO createSlide(CreateSlideRequest request);
     SlideDTO update(UpdateSlideRequest request, Long id);
-    SlideDTO deleteById(Long id);
+    SlideDTO deleteByIdService(Long id);
     List<SlideDTO> deleteAllId(List<Long> ids);
-    Page<Slide> filter(FilterSlideRequest request, Date dateFrom, Date dateTo);
+    Page<Slide> filterService(FilterSlideRequest request, Date dateFrom, Date dateTo);
 
 }

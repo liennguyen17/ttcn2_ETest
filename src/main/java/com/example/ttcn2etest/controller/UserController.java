@@ -1,7 +1,6 @@
 package com.example.ttcn2etest.controller;
 
 import com.example.ttcn2etest.constant.DateTimeConstant;
-import com.example.ttcn2etest.model.dto.SlideDTO;
 import com.example.ttcn2etest.model.dto.UserDTO;
 import com.example.ttcn2etest.model.etity.User;
 import com.example.ttcn2etest.request.user.CreateUserRequest;
@@ -35,7 +34,7 @@ public class UserController extends BaseController{
     @GetMapping("/all")
     ResponseEntity<?> getAllUser(){
         try{
-            List<UserDTO> response = userService.getAll();
+            List<UserDTO> response = userService.getAllUser();
             return buildListItemResponse(response, response.size());
         }catch (Exception ex){
             return buildResponse();
@@ -44,33 +43,33 @@ public class UserController extends BaseController{
 
     @GetMapping("/{id}")
     ResponseEntity<?> getById(@PathVariable Long id){
-        UserDTO response = userService.getById(id);
+        UserDTO response = userService.getByIdUser(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
     ResponseEntity<?> creatUser(@Valid @RequestBody CreateUserRequest request){
-        UserDTO response = userService.create(request);
+        UserDTO response = userService.createUser(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateUser(@Validated @RequestBody UpdateUserRequest request,
                                  @PathVariable("id") Long id) throws ParseException {
-        UserDTO response = userService.update(request, id);
+        UserDTO response = userService.updateUser(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteById(@PathVariable Long id){
-        UserDTO response = userService.deleteById(id);
+        UserDTO response = userService.deleteByIdUser(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all")
     ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids){
         try{
-            List<UserDTO> response = userService.deleteAllId(ids);
+            List<UserDTO> response = userService.deleteAllIdUser(ids);
             return buildListItemResponse(response, response.size());
         }catch (Exception ex){
             return buildResponse();
@@ -79,7 +78,7 @@ public class UserController extends BaseController{
 
     @PostMapping("/filter")
     public ResponseEntity<?> filterUser(@Validated @RequestBody FilterUserRequest request) throws ParseException {
-        Page<User> userPage = userService.filter(
+        Page<User> userPage = userService.filterUser(
                 request,
                 !Strings.isEmpty(request.getDateFrom()) ? MyUtils.convertDateFromString(request.getDateFrom(), DateTimeConstant.DATE_FORMAT) : null,
                 !Strings.isEmpty(request.getDateTo()) ? MyUtils.convertDateFromString(request.getDateTo(), DateTimeConstant.DATE_FORMAT) : null,

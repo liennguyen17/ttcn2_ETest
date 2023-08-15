@@ -9,6 +9,8 @@ import com.example.ttcn2etest.request.slide.FilterSlideRequest;
 import com.example.ttcn2etest.request.slide.UpdateSlideRequest;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -72,23 +74,23 @@ public class SlideServiceImpl implements SlideService{
             slide.setImage(request.getImage());
             slide.setLocation(request.getLocation());
             slide.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-            return modelMapper.map(slideRepository.save(slide), SlideDTO.class);
+            return modelMapper.map(slideRepository.saveAndFlush(slide), SlideDTO.class);
         }
         throw new RuntimeException("Có lỗi xảy ra trong quá trình cập nhật Slide!");
     }
 
     @Override
     @Transactional
-    public SlideDTO deleteById(Long id) {
+    public SlideDTO deleteByIdService(Long id) {
         if(!slideRepository.existsById(id)){
-            throw new RuntimeException("Slide có id:"+id+"cần xóa không tồn tại trong hệ thống!");
+            throw new RuntimeException("Slide có id:"+id+" cần xóa không tồn tại trong hệ thống!");
         }
         Optional<Slide> slideOptional = slideRepository.findById(id);
         if(slideOptional.isPresent()){
             slideRepository.deleteById(id);
             return modelMapper.map(slideOptional, SlideDTO.class);
         }
-        throw new RuntimeException("Có lỗi xảy ra tỏng quá trình xóa Slide!");
+        throw new RuntimeException("Có lỗi xảy ra trong quá trình xóa Slide!");
     }
 
     @Override
@@ -101,8 +103,25 @@ public class SlideServiceImpl implements SlideService{
         return slideDTOS;
     }
 
+
+    @Transactional
+    public List<SlideDTO> deleteAllById(List<Long> ids) {
+        List<SlideDTO> deletedSlides = new ArrayList<>();
+        for (Long id : ids) {
+            Optional<Slide> optionalSlide = slideRepository.findById(id);
+            if (optionalSlide.isPresent()) {
+                Slide slide = optionalSlide.get();
+                deletedSlides.add(modelMapper.map(slide, SlideDTO.class));
+                slideRepository.delete(slide);
+            } else {
+                throw new RuntimeException("Có lỗi xảy ra trong quá trình xóa danh sách slide!");
+            }
+        }
+        return deletedSlides;
+    }
+
     @Override
-    public Page<Slide> filter(FilterSlideRequest request, Date dateFrom, Date dateTo) {
+    public Page<Slide> filterService(FilterSlideRequest request, Date dateFrom, Date dateTo) {
         Specification<Slide> specification = CustomSlideRepository.filterSpecification(dateFrom, dateTo, request);
         Page<Slide> slidePage = slideRepository.findAll(specification, PageRequest.of(request.getStart(), request.getLimit()));
         return slidePage;

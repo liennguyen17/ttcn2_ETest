@@ -37,4 +37,12 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE).body(adapter.download(fileName));
     }
+
+
+    ///
+    @PostMapping(path = "/upload", produces = MimeTypeUtils.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Mono<UploadResponse> upload1(
+            @RequestPart(value = "files", required = true) Mono<FilePart> files) {
+        return adapter.uploadFile1(files);
+    }
 }

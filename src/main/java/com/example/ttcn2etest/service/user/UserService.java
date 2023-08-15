@@ -12,12 +12,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface UserService {
-    List<UserDTO> getAll();
-    UserDTO getById(Long id);
-    UserDTO create(CreateUserRequest request);
-    UserDTO update(UpdateUserRequest request, Long id) throws ParseException;
-    UserDTO deleteById(Long id);
-    List<UserDTO> deleteAllId(List<Long> ids);
-    Page<User> filter(FilterUserRequest request, Date dateFrom, Date dateTo, Date dateOfBirthFrom, Date dateOfBirthTo);
+    List<UserDTO> getAllUser();
+    UserDTO getByIdUser(Long id);
+    UserDTO createUser(CreateUserRequest request);
+    UserDTO updateUser(UpdateUserRequest request, Long id) throws ParseException;
+    UserDTO deleteByIdUser(Long id);
+    List<UserDTO> deleteAllIdUser(List<Long> ids);
+    Page<User> filterUser(FilterUserRequest request, Date dateFrom, Date dateTo, Date dateOfBirthFrom, Date dateOfBirthTo);
 
 }

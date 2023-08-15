@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -107,4 +108,46 @@ public class MinioAdapter {
                     }
                 }).log();
     }
+
+
+
+    public Mono<com.example.ttcn2etest.response.UploadResponse> uploadFile1(Mono<FilePart> file) {
+        return file.flatMap(multipartFile -> {
+            long startMillis = System.currentTimeMillis();
+            File temp = new File(multipartFile.filename());
+            temp.canWrite();
+            temp.canRead();
+            try {
+                System.out.println(temp.getAbsolutePath());
+
+                // Non-blocking transfer operation
+                return multipartFile.transferTo(temp)
+                        .then(Mono.defer(() -> {
+                            UploadObjectArgs uploadObjectArgs = null;
+                            try {
+                                uploadObjectArgs = UploadObjectArgs.builder()
+                                        .bucket(defaultBucketName)
+                                        .object(defaultBaseFolder + "/" + multipartFile.filename())
+                                        .filename(temp.getAbsolutePath())
+                                        .build();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            UploadObjectArgs finalUploadObjectArgs = uploadObjectArgs;
+                            return Mono.fromCallable(() -> minioClient.uploadObject(finalUploadObjectArgs))
+                                    .map(response -> {
+                                        temp.delete();
+                                        log.info("upload file execution time {} ms", System.currentTimeMillis() - startMillis);
+                                        return com.example.ttcn2etest.response.UploadResponse.builder()
+                                                .bucket(response.bucket())
+                                                .objectName(response.object())
+                                                .build();
+                                    });
+                        }));
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        }).log();
+    }
+
 }

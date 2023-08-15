@@ -60,7 +60,7 @@ public class SlideController extends BaseController{
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteById(@PathVariable("id") Long id){
-        SlideDTO response = slideService.deleteById(id);
+        SlideDTO response = slideService.deleteByIdService(id);
         return buildItemResponse(response);
     }
 
@@ -76,7 +76,7 @@ public class SlideController extends BaseController{
 
     @PostMapping("/filter")
     public ResponseEntity<?> filter(@Validated @RequestBody FilterSlideRequest request) throws ParseException {
-        Page<Slide> slidePage = slideService.filter(
+        Page<Slide> slidePage = slideService.filterService(
                 request,
                 !Strings.isEmpty(request.getDateFrom()) ? MyUtils.convertDateFromString(request.getDateFrom(), DateTimeConstant.DATE_FORMAT) : null,
                 !Strings.isEmpty(request.getDateTo()) ? MyUtils.convertDateFromString(request.getDateTo(), DateTimeConstant.DATE_FORMAT) : null

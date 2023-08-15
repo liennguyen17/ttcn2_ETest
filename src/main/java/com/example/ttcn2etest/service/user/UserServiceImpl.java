@@ -43,14 +43,14 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public List<UserDTO> getAll() {
+    public List<UserDTO> getAllUser() {
         return userRepository.findAll().stream().map(
                 user -> modelMapper.map(user, UserDTO.class)
         ).collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO getById(Long id) {
+    public UserDTO getByIdUser(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return modelMapper.map(user.get(), UserDTO.class);
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO create(CreateUserRequest request) {
+    public UserDTO createUser(CreateUserRequest request) {
         try {
             if (userRepository.existsByUsername(request.getUsername())){
                 throw new UsernameAlreadyExistsException("Tên người dùng đã tồn tại, nhập lại username khác!");
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO update(UpdateUserRequest request, Long id) throws ParseException {
+    public UserDTO updateUser(UpdateUserRequest request, Long id) throws ParseException {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO deleteById(Long id) {
+    public UserDTO deleteByIdUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new EntityNotFoundException("Người dùng có id:" + id + "cần xóa không tồn tại trong hệ thống!");
         }
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserDTO> deleteAllId(List<Long> ids) {
+    public List<UserDTO> deleteAllIdUser(List<Long> ids) {
         List<UserDTO> userDTOS = new ArrayList<>();
         for(User user: userRepository.findAllById(ids)){
             userDTOS.add(modelMapper.map(user, UserDTO.class));
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> filter(FilterUserRequest request, Date dateFrom, Date dateTo, Date dateOfBirthFrom, Date dateOfBirthTo) {
+    public Page<User> filterUser(FilterUserRequest request, Date dateFrom, Date dateTo, Date dateOfBirthFrom, Date dateOfBirthTo) {
         Specification<User> specification = CustomUserRepository.filterSpecification(dateFrom, dateTo, dateOfBirthFrom,dateOfBirthTo, request);
         Page<User> userPage = userRepository.findAll(specification, PageRequest.of(request.getStart(), request.getLimit()));
         return userPage;
