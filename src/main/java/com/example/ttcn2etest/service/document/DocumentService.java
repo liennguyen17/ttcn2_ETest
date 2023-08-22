@@ -12,11 +12,18 @@ import java.util.List;
 
 public interface DocumentService {
     List<DocumentDTO> getAllDocument();
+
     DocumentDTO getByIdDocument(Long id);
+
     DocumentDTO createDocument(CreateDocumentRequest request);
-    DocumentDTO updateDocument(UpdateDocumentRequest request,Long id);
+
+    DocumentDTO updateDocument(UpdateDocumentRequest request, Long id);
+
     DocumentDTO deleteByIdDocument(Long id);
+
     List<DocumentDTO> deleteAllIdDoc(List<Long> ids);
+
     List<DocumentDTO> deleteAllIdDocument(List<Long> ids);
+
     Page<Document> filterDocument(FilterDocumentRequest request, Date dateFrom, Date dateTo);
 }

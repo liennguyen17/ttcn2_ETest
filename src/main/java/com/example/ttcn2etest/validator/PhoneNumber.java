@@ -11,6 +11,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PhoneNumber {
     String message() default "Số điện thoại không hợp lệ!";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

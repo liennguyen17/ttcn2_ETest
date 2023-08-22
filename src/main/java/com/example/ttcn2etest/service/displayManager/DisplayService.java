@@ -12,12 +12,19 @@ import java.util.List;
 
 public interface DisplayService {
     List<DisplayManagerDTO> getAllDisplayManager();
+
     DisplayManagerDTO getByIdDisplay(Long id);
+
     DisplayManagerDTO createDisplay(CreateDisplayRequest request);
+
     DisplayManagerDTO updateDisplay(UpdateDisplayRequest request, Long id);
+
     DisplayManagerDTO deleteByIdDisplay(Long id);
+
     List<DisplayManagerDTO> deleteAllDisplay(List<Long> ids);
+
     List<DisplayManagerDTO> deleteAllDisplayManager(List<Long> ids);
+
     Page<DisplayManager> filterDisplay(FilterDisplayRequest request, Date dateFrom, Date dateTo);
 
 

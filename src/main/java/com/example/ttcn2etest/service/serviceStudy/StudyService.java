@@ -12,12 +12,17 @@ import java.util.List;
 
 public interface StudyService {
     List<ServiceDTO> getAllService();
+
     ServiceDTO getByIdService(Long id);
+
     ServiceDTO createService(ServiceRequest request);
+
     ServiceDTO updateService(ServiceRequest request, Long id);
+
     ServiceDTO deleteByIdService(Long id);
 
     List<ServiceDTO> deleteAllIdService(List<Long> ids);
+
     Page<Service> filterService(FilterServiceRequest request, Date dateFrom, Date dateTo, BigDecimal maxPrice, BigDecimal minPrice);
 
 }

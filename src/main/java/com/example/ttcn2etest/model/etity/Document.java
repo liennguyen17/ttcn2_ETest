@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
 
@@ -19,9 +18,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Document {
-    public enum Status{
-        FREE, NO_FREE
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +37,8 @@ public class Document {
     private Timestamp createdDate;
     @Column(name = "update_date")
     private Timestamp updateDate;
+
+    public enum Status {
+        FREE, NO_FREE
+    }
 }

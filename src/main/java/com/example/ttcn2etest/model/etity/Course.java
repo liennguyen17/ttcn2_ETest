@@ -7,10 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
 @Entity
 @Table(name = "course")
 
@@ -19,9 +19,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Course {
-    public enum Learn{
-        ONLINE, OFFLINE, ONLINE_AND_OFFLINE
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,6 +47,9 @@ public class Course {
     private Timestamp createdDate;
     @Column(name = "update_date")
     private Timestamp updateDate;
+    public enum Learn {
+        ONLINE, OFFLINE, ONLINE_AND_OFFLINE
+    }
 
 //    @ManyToOne
 //    @JoinColumn(name = "teacher_id")

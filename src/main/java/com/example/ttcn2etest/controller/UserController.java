@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController{
+public class UserController extends BaseController {
     private final UserService userService;
 
     private final ModelMapper modelMapper = new ModelMapper();
@@ -32,23 +32,23 @@ public class UserController extends BaseController{
     }
 
     @GetMapping("/all")
-    ResponseEntity<?> getAllUser(){
-        try{
+    ResponseEntity<?> getAllUser() {
+        try {
             List<UserDTO> response = userService.getAllUser();
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id){
+    ResponseEntity<?> getById(@PathVariable Long id) {
         UserDTO response = userService.getByIdUser(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
-    ResponseEntity<?> creatUser(@Valid @RequestBody CreateUserRequest request){
+    ResponseEntity<?> creatUser(@Valid @RequestBody CreateUserRequest request) {
         UserDTO response = userService.createUser(request);
         return buildItemResponse(response);
     }
@@ -61,17 +61,17 @@ public class UserController extends BaseController{
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteById(@PathVariable Long id){
+    ResponseEntity<?> deleteById(@PathVariable Long id) {
         UserDTO response = userService.deleteByIdUser(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all")
-    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids) {
+        try {
             List<UserDTO> response = userService.deleteAllIdUser(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
@@ -84,7 +84,7 @@ public class UserController extends BaseController{
                 !Strings.isEmpty(request.getDateTo()) ? MyUtils.convertDateFromString(request.getDateTo(), DateTimeConstant.DATE_FORMAT) : null,
                 !Strings.isEmpty(request.getDateOfBirthFrom()) ? MyUtils.convertDateFromString(request.getDateOfBirthFrom(), DateTimeConstant.DATE_FORMAT) : null,
                 !Strings.isEmpty(request.getDateOfBirthTo()) ? MyUtils.convertDateFromString(request.getDateOfBirthTo(), DateTimeConstant.DATE_FORMAT) : null
-        ) ;
+        );
         List<UserDTO> userDTOS = userPage.getContent().stream().map(
                 user -> modelMapper.map(user, UserDTO.class)
         ).collect(Collectors.toList());

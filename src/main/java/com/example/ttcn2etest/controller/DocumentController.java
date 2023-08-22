@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/document")
-public class DocumentController extends BaseController{
+public class DocumentController extends BaseController {
     private final DocumentService documentService;
 
     private final ModelMapper modelMapper = new ModelMapper();
@@ -31,56 +31,56 @@ public class DocumentController extends BaseController{
     }
 
     @GetMapping("/all")
-    ResponseEntity<?> getAllDocument(){
-        try{
+    ResponseEntity<?> getAllDocument() {
+        try {
             List<DocumentDTO> response = documentService.getAllDocument();
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id){
+    ResponseEntity<?> getById(@PathVariable Long id) {
         DocumentDTO response = documentService.getByIdDocument(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
-    ResponseEntity<?> createDocument(@Validated @RequestBody CreateDocumentRequest request){
+    ResponseEntity<?> createDocument(@Validated @RequestBody CreateDocumentRequest request) {
         DocumentDTO response = documentService.createDocument(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateService(@Validated @RequestBody UpdateDocumentRequest request,
-                                    @PathVariable("id") Long id){
+                                    @PathVariable("id") Long id) {
         DocumentDTO response = documentService.updateDocument(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteById(@PathVariable Long id){
+    ResponseEntity<?> deleteById(@PathVariable Long id) {
         DocumentDTO response = documentService.deleteByIdDocument(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all1")
-    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids) {
+        try {
             List<DocumentDTO> response = documentService.deleteAllIdDoc(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @DeleteMapping("/delete/all2")
-    ResponseEntity<?> deleteAllIdDocument(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllIdDocument(@RequestBody List<Long> ids) {
+        try {
             List<DocumentDTO> response = documentService.deleteAllIdDocument(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }

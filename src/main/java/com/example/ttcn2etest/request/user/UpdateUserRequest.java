@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.Date;
 @Data
 public class UpdateUserRequest {
     @NotBlank(message = "User name nguời dùng không được để trống!")

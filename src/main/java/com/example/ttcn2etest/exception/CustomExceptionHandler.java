@@ -63,7 +63,7 @@ public class CustomExceptionHandler {
     @ResponseStatus(OK)
     @ResponseBody
     @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public BaseResponse handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex){
+    public BaseResponse handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
         String errorMessage = ex.getErrorMessage();
         BaseResponse response = new BaseResponse();
         response.setFailed(ErrorCodeDefs.BAD_REQUEST, errorMessage);

@@ -1,5 +1,6 @@
 package com.example.ttcn2etest.request.document;
 
+import com.example.ttcn2etest.model.etity.ConsultingRegistration;
 import com.example.ttcn2etest.model.etity.Document;
 import com.example.ttcn2etest.validator.DateValidateAnnotation;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,6 @@ public class FilterDocumentRequest {
     @DateValidateAnnotation(message = "DateTo phải có định dạng dd/MM/yyyy")
     private String dateTo;
     private String name;
-    private Document.Status status;
+    private ConsultingRegistration.Status status;
 
 }

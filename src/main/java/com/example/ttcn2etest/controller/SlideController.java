@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/slide")
-public class SlideController extends BaseController{
+public class SlideController extends BaseController {
     private final SlideService slideService;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -30,46 +30,46 @@ public class SlideController extends BaseController{
     }
 
     @GetMapping("/all")
-    ResponseEntity<?> getAllSlide(){
-        try{
+    ResponseEntity<?> getAllSlide() {
+        try {
             List<SlideDTO> response = slideService.getAll();
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable("id") Long id){
+    ResponseEntity<?> getById(@PathVariable("id") Long id) {
         SlideDTO response = slideService.getById(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
-    ResponseEntity<?> createSlide(@Validated @RequestBody CreateSlideRequest request){
+    ResponseEntity<?> createSlide(@Validated @RequestBody CreateSlideRequest request) {
         SlideDTO response = slideService.createSlide(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> update(@Validated @RequestBody UpdateSlideRequest request,
-                             @PathVariable("id") Long id){
+                             @PathVariable("id") Long id) {
         SlideDTO response = slideService.update(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteById(@PathVariable("id") Long id){
+    ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
         SlideDTO response = slideService.deleteByIdService(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all")
-    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids) {
+        try {
             List<SlideDTO> response = slideService.deleteAllId(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }

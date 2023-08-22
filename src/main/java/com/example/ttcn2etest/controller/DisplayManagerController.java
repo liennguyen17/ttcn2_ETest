@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/display")
-public class DisplayManagerController extends BaseController{
+public class DisplayManagerController extends BaseController {
     private final DisplayService displayService;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -30,56 +30,56 @@ public class DisplayManagerController extends BaseController{
     }
 
     @GetMapping("/all")
-    ResponseEntity<?> getAllDisplayManager(){
-        try{
+    ResponseEntity<?> getAllDisplayManager() {
+        try {
             List<DisplayManagerDTO> response = displayService.getAllDisplayManager();
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id){
+    ResponseEntity<?> getById(@PathVariable Long id) {
         DisplayManagerDTO response = displayService.getByIdDisplay(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
-    ResponseEntity<?> createDocument(@Validated @RequestBody CreateDisplayRequest request){
+    ResponseEntity<?> createDocument(@Validated @RequestBody CreateDisplayRequest request) {
         DisplayManagerDTO response = displayService.createDisplay(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateService(@Validated @RequestBody UpdateDisplayRequest request,
-                                    @PathVariable("id") Long id){
+                                    @PathVariable("id") Long id) {
         DisplayManagerDTO response = displayService.updateDisplay(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteById(@PathVariable Long id){
+    ResponseEntity<?> deleteById(@PathVariable Long id) {
         DisplayManagerDTO response = displayService.deleteByIdDisplay(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all1")
-    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllId(@RequestBody List<Long> ids) {
+        try {
             List<DisplayManagerDTO> response = displayService.deleteAllDisplay(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @DeleteMapping("/delete/all2")
-    ResponseEntity<?> deleteAllIdDocument(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllIdDocument(@RequestBody List<Long> ids) {
+        try {
             List<DisplayManagerDTO> response = displayService.deleteAllDisplayManager(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
@@ -90,12 +90,11 @@ public class DisplayManagerController extends BaseController{
                 request,
                 !Strings.isEmpty(request.getDateFrom()) ? MyUtils.convertDateFromString(request.getDateFrom(), DateTimeConstant.DATE_FORMAT) : null,
                 !Strings.isEmpty(request.getDateTo()) ? MyUtils.convertDateFromString(request.getDateTo(), DateTimeConstant.DATE_FORMAT) : null);
-            List<DisplayManagerDTO> displayManagerDTOS = displayPage.getContent().stream().map(
+        List<DisplayManagerDTO> displayManagerDTOS = displayPage.getContent().stream().map(
                 displayManager -> modelMapper.map(displayManager, DisplayManagerDTO.class)
         ).collect(Collectors.toList());
         return buildListItemResponse(displayManagerDTOS, displayPage.getTotalElements());
     }
-
 
 
 }

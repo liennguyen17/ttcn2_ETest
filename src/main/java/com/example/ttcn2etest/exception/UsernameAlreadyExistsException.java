@@ -1,6 +1,6 @@
 package com.example.ttcn2etest.exception;
 
-public class UsernameAlreadyExistsException extends RuntimeException{
+public class UsernameAlreadyExistsException extends RuntimeException {
     private String errorMessage;
 
     public UsernameAlreadyExistsException(String errorMessage) {

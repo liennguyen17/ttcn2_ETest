@@ -22,5 +22,6 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
         }
 
         // Kiểm tra số điện thoại có đúng đầu số 03, 05, 07, 08, 09 không
-        return phone.matches("03[2-9]\\d{7}|05[6-9]\\d{7}|07[0-9]\\d{7}|08[1-9]\\d{7}|09\\d{8}");    }
+        return phone.matches("03[2-9]\\d{7}|05[6-9]\\d{7}|07[0-9]\\d{7}|08[1-9]\\d{7}|09\\d{8}");
+    }
 }

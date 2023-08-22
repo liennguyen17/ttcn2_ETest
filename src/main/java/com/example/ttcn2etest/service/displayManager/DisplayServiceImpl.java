@@ -1,12 +1,9 @@
 package com.example.ttcn2etest.service.displayManager;
 
 import com.example.ttcn2etest.model.dto.DisplayManagerDTO;
-import com.example.ttcn2etest.model.dto.DocumentDTO;
 import com.example.ttcn2etest.model.etity.DisplayManager;
-import com.example.ttcn2etest.model.etity.Document;
 import com.example.ttcn2etest.repository.displayManager.CustomDisplayManagerRepository;
 import com.example.ttcn2etest.repository.displayManager.DisplayManagerRepository;
-import com.example.ttcn2etest.repository.document.CustomDocumentRepository;
 import com.example.ttcn2etest.request.displayManager.CreateDisplayRequest;
 import com.example.ttcn2etest.request.displayManager.FilterDisplayRequest;
 import com.example.ttcn2etest.request.displayManager.UpdateDisplayRequest;
@@ -25,7 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class DisplayServiceImpl implements DisplayService{
+public class DisplayServiceImpl implements DisplayService {
     private final DisplayManagerRepository displayManagerRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -43,16 +40,16 @@ public class DisplayServiceImpl implements DisplayService{
     @Override
     public DisplayManagerDTO getByIdDisplay(Long id) {
         Optional<DisplayManager> displayManagerOptional = displayManagerRepository.findById(id);
-        if(displayManagerOptional.isPresent()){
+        if (displayManagerOptional.isPresent()) {
             return modelMapper.map(displayManagerOptional.get(), DisplayManagerDTO.class);
-        }else{
+        } else {
             throw new RuntimeException("Id không tồn tại trong hệ thống!");
         }
     }
 
     @Override
     public DisplayManagerDTO createDisplay(CreateDisplayRequest request) {
-        try{
+        try {
             DisplayManager displayManager = DisplayManager.builder()
                     .title(request.getTitle())
                     .image(request.getImage())
@@ -63,7 +60,7 @@ public class DisplayServiceImpl implements DisplayService{
                     .build();
             displayManager = displayManagerRepository.saveAndFlush(displayManager);
             return modelMapper.map(displayManager, DisplayManagerDTO.class);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Có lỗi xảy ra trong quá trình thêm mới!");
         }
     }
@@ -71,7 +68,7 @@ public class DisplayServiceImpl implements DisplayService{
     @Override
     public DisplayManagerDTO updateDisplay(UpdateDisplayRequest request, Long id) {
         Optional<DisplayManager> displayManagerOptional = displayManagerRepository.findById(id);
-        if(displayManagerOptional.isPresent()){
+        if (displayManagerOptional.isPresent()) {
             DisplayManager displayManager = displayManagerOptional.get();
             displayManager.setTitle(request.getTitle());
             displayManager.setImage(request.getImage());
@@ -86,11 +83,11 @@ public class DisplayServiceImpl implements DisplayService{
     @Override
     @Transactional
     public DisplayManagerDTO deleteByIdDisplay(Long id) {
-        if(!displayManagerRepository.existsById(id)){
-            throw new RuntimeException("Id: "+id+" cần xóa không tồn tại trong hệ thống!");
+        if (!displayManagerRepository.existsById(id)) {
+            throw new RuntimeException("Id: " + id + " cần xóa không tồn tại trong hệ thống!");
         }
         Optional<DisplayManager> displayManagerOptional = displayManagerRepository.findById(id);
-        if(displayManagerOptional.isPresent()){
+        if (displayManagerOptional.isPresent()) {
             displayManagerRepository.deleteById(id);
             return modelMapper.map(displayManagerOptional, DisplayManagerDTO.class);
         }
@@ -102,7 +99,7 @@ public class DisplayServiceImpl implements DisplayService{
     @Transactional
     public List<DisplayManagerDTO> deleteAllDisplay(List<Long> ids) {
         List<DisplayManagerDTO> displayManagerDTOS = new ArrayList<>();
-        for (DisplayManager displayManager: displayManagerRepository.findAllById(ids)){
+        for (DisplayManager displayManager : displayManagerRepository.findAllById(ids)) {
             displayManagerDTOS.add(modelMapper.map(displayManager, DisplayManagerDTO.class));
         }
         displayManagerRepository.deleteAllByIdInBatch(ids);
@@ -110,18 +107,17 @@ public class DisplayServiceImpl implements DisplayService{
     }
 
 
-
     //sử dụng các này thì thời gian xóa sẽ nhanh hơn 48ms => xóa 3 ptu
     @Override
     public List<DisplayManagerDTO> deleteAllDisplayManager(List<Long> ids) {
         List<DisplayManagerDTO> displayManagerDTOS = new ArrayList<>();
-        for(Long id : ids){
+        for (Long id : ids) {
             Optional<DisplayManager> displayManagerOptional = displayManagerRepository.findById(id);
-            if(displayManagerOptional.isPresent()){
+            if (displayManagerOptional.isPresent()) {
                 DisplayManager displayManager = displayManagerOptional.get();
                 displayManagerDTOS.add(modelMapper.map(displayManager, DisplayManagerDTO.class));
                 displayManagerRepository.delete(displayManager);
-            }else {
+            } else {
                 throw new RuntimeException("Có lỗi xảy ra trong quá trình xóa danh sách các màn hiển thị!");
             }
         }

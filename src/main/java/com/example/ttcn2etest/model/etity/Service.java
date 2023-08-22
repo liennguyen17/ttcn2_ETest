@@ -22,13 +22,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Service {
-    public enum TypeService{
-        EDUCATION_PROGRAM, REVIEW_LESSON, COURSE
-    }
-
-    public enum Learn{
-        ONLINE, OFFLINE, ONLINE_AND_OFFLINE
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +35,6 @@ public class Service {
     @Size(max = 300)
     @Column(name = "study_goals")
     private String studyGoals;
-
     @Column(name = "schedule")
     private String schedule;
     @Column(name = "number_teaching_sessions")
@@ -64,6 +56,12 @@ public class Service {
     private Timestamp createdDate;
     @Column(name = "update_date")
     private Timestamp updateDate;
+    public enum TypeService {
+        EDUCATION_PROGRAM, REVIEW_LESSON, COURSE
+    }
+    public enum Learn {
+        ONLINE, OFFLINE, ONLINE_AND_OFFLINE
+    }
 
 
 //    @ManyToOne

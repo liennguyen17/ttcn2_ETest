@@ -2,6 +2,7 @@ package com.example.ttcn2etest.controller;
 
 import com.example.ttcn2etest.response.UploadResponse;
 import com.example.ttcn2etest.service.file.MinioAdapter;
+import io.minio.errors.*;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,6 +11,10 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/file")
@@ -25,11 +30,14 @@ public class FileController {
             @RequestPart(value = "files", required = true) Mono<FilePart> files) {
         return adapter.uploadFile(files);
     }
+
+    //upload file
     @PostMapping(path = "/stream", produces = MimeTypeUtils.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<UploadResponse> uploadStream(
             @RequestPart(value = "files", required = true) FilePart files, @RequestParam(value = "ttl", required = false) Integer ttl) {
         return adapter.putObject(files);
     }
+
     @GetMapping(path = "/")
     public ResponseEntity<Mono<InputStreamResource>> download(
             @RequestParam(value = "filename") String fileName) {
@@ -38,11 +46,17 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE).body(adapter.download(fileName));
     }
 
-
-    ///
-    @PostMapping(path = "/upload", produces = MimeTypeUtils.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Mono<UploadResponse> upload1(
-            @RequestPart(value = "files", required = true) Mono<FilePart> files) {
-        return adapter.uploadFile1(files);
+    //download file
+    @GetMapping(path = "/download")
+    public ResponseEntity<String> getUrlFileWithExpiredTime(
+            @RequestParam(value = "filename") String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        return ResponseEntity.ok().body(adapter.getUrlFileWithExpiredTime(fileName));
     }
+
+
+
+
+
+
+
 }

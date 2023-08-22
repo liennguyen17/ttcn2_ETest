@@ -14,14 +14,14 @@ import java.util.List;
 @Repository
 public class CustomNewsRepository {
     public static Specification<News> filterSpecification(Date dateFrom, Date dateTo,
-                                                          FilterNewsRequest request){
+                                                          FilterNewsRequest request) {
         return ((((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if(dateFrom != null && dateTo != null){
+            if (dateFrom != null && dateTo != null) {
                 predicates.add(criteriaBuilder.between(root.get("createdDate"), dateFrom, dateTo));
             }
-            if (StringUtils.hasText(request.getName())){
-                predicates.add(criteriaBuilder.like(root.get("name"), "%" + request.getName()+ "%"));
+            if (StringUtils.hasText(request.getName())) {
+                predicates.add(criteriaBuilder.like(root.get("name"), "%" + request.getName() + "%"));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         })));

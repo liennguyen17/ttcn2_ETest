@@ -23,11 +23,11 @@ public class CustomDocumentRepository {
             if (StringUtils.hasText(request.getName())) {
                 predicates.add(criteriaBuilder.like(root.get("name"), "%" + request.getName() + "%"));
             }
-            if(request.getStatus() != null && !request.getStatus().equals("")){
-                try{
+            if (request.getStatus() != null && !request.getStatus().equals("")) {
+                try {
                     Document.Status status = Document.Status.valueOf(String.valueOf(request.getStatus()));
                     predicates.add(criteriaBuilder.equal(root.get("status"), status));
-                }catch (Exception e){
+                } catch (Exception e) {
                     throw new RuntimeException("Loại tài liệu tìm kiếm không hợp lệ!");
                 }
             }

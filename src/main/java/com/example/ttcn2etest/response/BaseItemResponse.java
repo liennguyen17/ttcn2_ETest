@@ -11,7 +11,8 @@ public class BaseItemResponse<T> extends BaseResponse {
     private int statusCode;
     private Date timestamp = new Date();
 
-    public BaseItemResponse() {}
+    public BaseItemResponse() {
+    }
 
     public BaseItemResponse(T data) {
         this.data = data;

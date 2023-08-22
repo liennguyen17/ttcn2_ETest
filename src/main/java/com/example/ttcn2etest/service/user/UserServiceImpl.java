@@ -16,7 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO createUser(CreateUserRequest request) {
         try {
-            if (userRepository.existsByUsername(request.getUsername())){
+            if (userRepository.existsByUsername(request.getUsername())) {
                 throw new UsernameAlreadyExistsException("Tên người dùng đã tồn tại, nhập lại username khác!");
             }
             User user = User.builder()
@@ -83,9 +82,9 @@ public class UserServiceImpl implements UserService {
                     .build();
             user = userRepository.saveAndFlush(user);
             return modelMapper.map(user, UserDTO.class);
-        }catch (UsernameAlreadyExistsException ex){
+        } catch (UsernameAlreadyExistsException ex) {
             throw ex;
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("Có lỗi cảy ra trong quá tình tọa người dùng mới!");
         }
     }
@@ -129,7 +128,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDTO> deleteAllIdUser(List<Long> ids) {
         List<UserDTO> userDTOS = new ArrayList<>();
-        for(User user: userRepository.findAllById(ids)){
+        for (User user : userRepository.findAllById(ids)) {
             userDTOS.add(modelMapper.map(user, UserDTO.class));
         }
         userRepository.deleteAllByIdInBatch(ids);
@@ -138,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> filterUser(FilterUserRequest request, Date dateFrom, Date dateTo, Date dateOfBirthFrom, Date dateOfBirthTo) {
-        Specification<User> specification = CustomUserRepository.filterSpecification(dateFrom, dateTo, dateOfBirthFrom,dateOfBirthTo, request);
+        Specification<User> specification = CustomUserRepository.filterSpecification(dateFrom, dateTo, dateOfBirthFrom, dateOfBirthTo, request);
         Page<User> userPage = userRepository.findAll(specification, PageRequest.of(request.getStart(), request.getLimit()));
         return userPage;
     }

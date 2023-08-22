@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/news")
-public class NewsController extends BaseController{
+public class NewsController extends BaseController {
     private final NewsService newsService;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -30,46 +30,46 @@ public class NewsController extends BaseController{
     }
 
     @GetMapping("/all")
-    ResponseEntity<?> getAllId(){
-        try{
+    ResponseEntity<?> getAllId() {
+        try {
             List<NewsDTO> response = newsService.getAll();
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id){
+    ResponseEntity<?> getById(@PathVariable Long id) {
         NewsDTO response = newsService.getByIdNews(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
-    ResponseEntity<?> createNews(@Validated @RequestBody CreateNewsRequest request){
+    ResponseEntity<?> createNews(@Validated @RequestBody CreateNewsRequest request) {
         NewsDTO response = newsService.createNews(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateNews(@Validated @RequestBody UpdateNewsRequest request,
-                                 @PathVariable("id") Long id){
+                                 @PathVariable("id") Long id) {
         NewsDTO response = newsService.updateNews(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<?> deleteById(@PathVariable Long id){
+    ResponseEntity<?> deleteById(@PathVariable Long id) {
         NewsDTO response = newsService.deleteByIdNews(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all")
-    ResponseEntity<?> deleteAllById(@RequestBody List<Long> ids){
-        try{
+    ResponseEntity<?> deleteAllById(@RequestBody List<Long> ids) {
+        try {
             List<NewsDTO> response = newsService.deleteAllIdNews(ids);
             return buildListItemResponse(response, response.size());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return buildResponse();
         }
     }

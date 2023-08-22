@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class NewsServiceImpl implements NewsService{
+public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -40,9 +40,9 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public NewsDTO getByIdNews(Long id) {
         Optional<News> newsOptional = newsRepository.findById(id);
-        if(newsOptional.isPresent()){
+        if (newsOptional.isPresent()) {
             return modelMapper.map(newsOptional.get(), NewsDTO.class);
-        }else {
+        } else {
             throw new RuntimeException("Id tin tức không tồn tại trong hệ thống!");
         }
     }
@@ -50,7 +50,7 @@ public class NewsServiceImpl implements NewsService{
     @Override
     @Transactional
     public NewsDTO createNews(CreateNewsRequest request) {
-        try{
+        try {
             News news = News.builder()
                     .name(request.getName())
                     .content(request.getContent())
@@ -60,7 +60,7 @@ public class NewsServiceImpl implements NewsService{
                     .build();
             news = newsRepository.saveAndFlush(news);
             return modelMapper.map(news, NewsDTO.class);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Có lỗi xảy ra trong quá trình thêm tin tức mới!");
         }
     }
@@ -68,7 +68,7 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public NewsDTO updateNews(UpdateNewsRequest request, Long id) {
         Optional<News> newsOptional = newsRepository.findById(id);
-        if(newsOptional.isPresent()){
+        if (newsOptional.isPresent()) {
             News news = newsOptional.get();
             news.setName(request.getName());
             news.setContent(request.getContent());
@@ -81,11 +81,11 @@ public class NewsServiceImpl implements NewsService{
     @Override
     @Transactional
     public NewsDTO deleteByIdNews(Long id) {
-        if(!newsRepository.existsById(id)){
-            throw new RuntimeException("Tin tức có id: "+id+" cần xóa không tồn tại trong hệ thống!");
+        if (!newsRepository.existsById(id)) {
+            throw new RuntimeException("Tin tức có id: " + id + " cần xóa không tồn tại trong hệ thống!");
         }
         Optional<News> newsOptional = newsRepository.findById(id);
-        if(newsOptional.isPresent()){
+        if (newsOptional.isPresent()) {
             newsRepository.deleteById(id);
             return modelMapper.map(newsOptional, NewsDTO.class);
         }
@@ -95,13 +95,13 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public List<NewsDTO> deleteAllIdNews(List<Long> ids) {
         List<NewsDTO> newsDTOS = new ArrayList<>();
-        for(Long id : ids){
+        for (Long id : ids) {
             Optional<News> optionalNews = newsRepository.findById(id);
-            if(optionalNews.isPresent()){
+            if (optionalNews.isPresent()) {
                 News news = optionalNews.get();
                 newsDTOS.add(modelMapper.map(news, NewsDTO.class));
                 newsRepository.delete(news);
-            }else {
+            } else {
                 throw new RuntimeException("Có lỗi xảy ra trong quá trình xóa danh sách tin tức!");
             }
         }

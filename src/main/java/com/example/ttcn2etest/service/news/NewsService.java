@@ -12,10 +12,16 @@ import java.util.List;
 
 public interface NewsService {
     List<NewsDTO> getAll();
+
     NewsDTO getByIdNews(Long id);
+
     NewsDTO createNews(CreateNewsRequest request);
-    NewsDTO updateNews(UpdateNewsRequest request,Long id);
+
+    NewsDTO updateNews(UpdateNewsRequest request, Long id);
+
     NewsDTO deleteByIdNews(Long id);
+
     List<NewsDTO> deleteAllIdNews(List<Long> ids);
+
     Page<News> filterNews(FilterNewsRequest request, Date dateFrom, Date dateTo);
 }

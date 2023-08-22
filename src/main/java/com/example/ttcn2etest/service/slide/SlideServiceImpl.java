@@ -9,8 +9,6 @@ import com.example.ttcn2etest.request.slide.FilterSlideRequest;
 import com.example.ttcn2etest.request.slide.UpdateSlideRequest;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,7 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SlideServiceImpl implements SlideService{
+public class SlideServiceImpl implements SlideService {
     private final SlideRepository slideRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -42,9 +40,9 @@ public class SlideServiceImpl implements SlideService{
     @Override
     public SlideDTO getById(Long id) {
         Optional<Slide> slideOptional = slideRepository.findById(id);
-        if(slideOptional.isPresent()){
+        if (slideOptional.isPresent()) {
             return modelMapper.map(slideOptional.get(), SlideDTO.class);
-        }else {
+        } else {
             throw new RuntimeException("Id slide không tồn tại trong hệ thống!");
         }
     }
@@ -52,7 +50,7 @@ public class SlideServiceImpl implements SlideService{
     @Override
     @Transactional
     public SlideDTO createSlide(CreateSlideRequest request) {
-        try{
+        try {
             Slide slide = Slide.builder()
                     .location(request.getLocation())
                     .image(request.getImage())
@@ -61,7 +59,7 @@ public class SlideServiceImpl implements SlideService{
                     .build();
             slide = slideRepository.saveAndFlush(slide);
             return modelMapper.map(slide, SlideDTO.class);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Có lỗi xảy ra trong quá trình thêm slide mới!");
         }
     }
@@ -69,7 +67,7 @@ public class SlideServiceImpl implements SlideService{
     @Override
     public SlideDTO update(UpdateSlideRequest request, Long id) {
         Optional<Slide> slideOptional = slideRepository.findById(id);
-        if(slideOptional.isPresent()){
+        if (slideOptional.isPresent()) {
             Slide slide = slideOptional.get();
             slide.setImage(request.getImage());
             slide.setLocation(request.getLocation());
@@ -82,11 +80,11 @@ public class SlideServiceImpl implements SlideService{
     @Override
     @Transactional
     public SlideDTO deleteByIdService(Long id) {
-        if(!slideRepository.existsById(id)){
-            throw new RuntimeException("Slide có id:"+id+" cần xóa không tồn tại trong hệ thống!");
+        if (!slideRepository.existsById(id)) {
+            throw new RuntimeException("Slide có id:" + id + " cần xóa không tồn tại trong hệ thống!");
         }
         Optional<Slide> slideOptional = slideRepository.findById(id);
-        if(slideOptional.isPresent()){
+        if (slideOptional.isPresent()) {
             slideRepository.deleteById(id);
             return modelMapper.map(slideOptional, SlideDTO.class);
         }
@@ -96,7 +94,7 @@ public class SlideServiceImpl implements SlideService{
     @Override
     public List<SlideDTO> deleteAllId(List<Long> ids) {
         List<SlideDTO> slideDTOS = new ArrayList<>();
-        for(Slide slide: slideRepository.findAllById(ids)){
+        for (Slide slide : slideRepository.findAllById(ids)) {
             slideDTOS.add(modelMapper.map(slide, SlideDTO.class));
         }
         slideRepository.deleteAllByIdInBatch(ids);

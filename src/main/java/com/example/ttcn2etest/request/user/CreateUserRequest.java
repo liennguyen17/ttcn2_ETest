@@ -1,6 +1,7 @@
 package com.example.ttcn2etest.request.user;
 
 import com.example.ttcn2etest.validator.DateValidateAnnotation;
+import com.example.ttcn2etest.validator.EmailAnnotation;
 import com.example.ttcn2etest.validator.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +9,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @Builder
@@ -26,10 +25,11 @@ public class CreateUserRequest {
     @DateValidateAnnotation(message = "Định dạng ngày tháng phải là dd/mm/yyyy")
     private String dateOfBirth;
     @NotBlank(message = "Số điện thoại không được để trống!")
-    @PhoneNumber(message = "Số điện thoại không hợp lệ!")
+    @PhoneNumber
     private String phone;
     @NotBlank(message = "Email không được để trống!")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email không hợp lệ!")
+//    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email không hợp lệ!")
+    @EmailAnnotation
     private String email;
     @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;

@@ -12,11 +12,17 @@ import java.util.List;
 
 public interface SlideService {
     List<SlideDTO> getAll();
+
     SlideDTO getById(Long id);
+
     SlideDTO createSlide(CreateSlideRequest request);
+
     SlideDTO update(UpdateSlideRequest request, Long id);
+
     SlideDTO deleteByIdService(Long id);
+
     List<SlideDTO> deleteAllId(List<Long> ids);
+
     Page<Slide> filterService(FilterSlideRequest request, Date dateFrom, Date dateTo);
 
 }

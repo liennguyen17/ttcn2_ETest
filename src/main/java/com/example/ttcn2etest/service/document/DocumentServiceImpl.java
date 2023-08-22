@@ -1,9 +1,7 @@
 package com.example.ttcn2etest.service.document;
 
 import com.example.ttcn2etest.model.dto.DocumentDTO;
-import com.example.ttcn2etest.model.dto.NewsDTO;
 import com.example.ttcn2etest.model.etity.Document;
-import com.example.ttcn2etest.model.etity.News;
 import com.example.ttcn2etest.repository.document.CustomDocumentRepository;
 import com.example.ttcn2etest.repository.document.DocumentRepository;
 import com.example.ttcn2etest.request.document.CreateDocumentRequest;
@@ -22,8 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Service
-public class DocumentServiceImpl implements DocumentService{
+public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -41,9 +40,9 @@ public class DocumentServiceImpl implements DocumentService{
     @Override
     public DocumentDTO getByIdDocument(Long id) {
         Optional<Document> documentOptional = documentRepository.findById(id);
-        if(documentOptional.isPresent()){
+        if (documentOptional.isPresent()) {
             return modelMapper.map(documentOptional.get(), DocumentDTO.class);
-        }else {
+        } else {
             throw new RuntimeException("Id tài liệu không tồn tại trong hệ thống!");
         }
     }
@@ -51,7 +50,7 @@ public class DocumentServiceImpl implements DocumentService{
     @Override
     @Transactional
     public DocumentDTO createDocument(CreateDocumentRequest request) {
-        try{
+        try {
             Document document = Document.builder()
                     .name(request.getName())
                     .content(request.getContent())
@@ -63,7 +62,7 @@ public class DocumentServiceImpl implements DocumentService{
                     .build();
             document = documentRepository.saveAndFlush(document);
             return modelMapper.map(document, DocumentDTO.class);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Có lỗi xảy ra trong quá trình thêm tài liệu mới!");
         }
     }
@@ -72,7 +71,7 @@ public class DocumentServiceImpl implements DocumentService{
     @Transactional
     public DocumentDTO updateDocument(UpdateDocumentRequest request, Long id) {
         Optional<Document> documentOptional = documentRepository.findById(id);
-        if(documentOptional.isPresent()){
+        if (documentOptional.isPresent()) {
             Document document = documentOptional.get();
             document.setName(request.getName());
             document.setContent(request.getContent());
@@ -88,11 +87,11 @@ public class DocumentServiceImpl implements DocumentService{
     @Override
     @Transactional
     public DocumentDTO deleteByIdDocument(Long id) {
-        if(!documentRepository.existsById(id)){
-            throw new RuntimeException("Tài liệu có id: "+id+" cần xóa không tồn tại trong hệ thống!");
+        if (!documentRepository.existsById(id)) {
+            throw new RuntimeException("Tài liệu có id: " + id + " cần xóa không tồn tại trong hệ thống!");
         }
         Optional<Document> documentOptional = documentRepository.findById(id);
-        if(documentOptional.isPresent()){
+        if (documentOptional.isPresent()) {
             documentRepository.deleteById(id);
             return modelMapper.map(documentOptional, DocumentDTO.class);
         }
@@ -103,7 +102,7 @@ public class DocumentServiceImpl implements DocumentService{
     @Override
     public List<DocumentDTO> deleteAllIdDoc(List<Long> ids) {
         List<DocumentDTO> documentDTOS = new ArrayList<>();
-        for (Document document: documentRepository.findAllById(ids)){
+        for (Document document : documentRepository.findAllById(ids)) {
             documentDTOS.add(modelMapper.map(document, DocumentDTO.class));
         }
         documentRepository.deleteAllByIdInBatch(ids);
@@ -113,13 +112,13 @@ public class DocumentServiceImpl implements DocumentService{
     //26s=>3ptu
     public List<DocumentDTO> deleteAllIdDocument(List<Long> ids) {
         List<DocumentDTO> documentDTOS = new ArrayList<>();
-        for(Long id : ids){
+        for (Long id : ids) {
             Optional<Document> optionalDocument = documentRepository.findById(id);
-            if(optionalDocument.isPresent()){
+            if (optionalDocument.isPresent()) {
                 Document document = optionalDocument.get();
                 documentDTOS.add(modelMapper.map(document, DocumentDTO.class));
                 documentRepository.delete(document);
-            }else {
+            } else {
                 throw new RuntimeException("Có lỗi xảy ra trong quá trình xóa danh sách tài liệu!");
             }
         }

@@ -40,9 +40,9 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public ServiceDTO getByIdService(Long id) {
         Optional<com.example.ttcn2etest.model.etity.Service> service = serviceRepository.findById(id);
-        if(service.isPresent()){
+        if (service.isPresent()) {
             return modelMapper.map(service.get(), ServiceDTO.class);
-        }else {
+        } else {
             throw new RuntimeException("ID của dịch vụ không tồn tại trong hệ thống!");
         }
     }
@@ -50,7 +50,7 @@ public class StudyServiceImpl implements StudyService {
     @Override
     @Transactional
     public ServiceDTO createService(ServiceRequest request) {
-        try{
+        try {
             com.example.ttcn2etest.model.etity.Service service = com.example.ttcn2etest.model.etity.Service.builder()
                     .name(request.getName())
                     .description(request.getDescription())
@@ -67,7 +67,7 @@ public class StudyServiceImpl implements StudyService {
                     .build();
             service = serviceRepository.saveAndFlush(service);
             return modelMapper.map(service, ServiceDTO.class);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Có lỗi xảy ra trong quá trình tạo dịch vụ học!");
         }
     }
@@ -76,7 +76,7 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public ServiceDTO updateService(ServiceRequest request, Long id) {
         Optional<com.example.ttcn2etest.model.etity.Service> serviceOptional = serviceRepository.findById(id);
-        if(serviceOptional.isPresent()){
+        if (serviceOptional.isPresent()) {
             com.example.ttcn2etest.model.etity.Service service = serviceOptional.get();
             service.setName(request.getName());
             service.setDescription(request.getDescription());
@@ -96,13 +96,13 @@ public class StudyServiceImpl implements StudyService {
     @Override
     @Transactional
     public ServiceDTO deleteByIdService(Long id) {
-        if(!serviceRepository.existsById(id)){
+        if (!serviceRepository.existsById(id)) {
             throw new EntityNotFoundException("Dịch vụ có id: " + id + "cần xóa không tồn tại trong hệ thống!");
         }
         Optional<com.example.ttcn2etest.model.etity.Service> serviceOptional = serviceRepository.findById(id);
-        if(serviceOptional.isPresent()){
+        if (serviceOptional.isPresent()) {
             serviceRepository.deleteById(id);
-            return  modelMapper.map(serviceOptional, ServiceDTO.class);
+            return modelMapper.map(serviceOptional, ServiceDTO.class);
         }
         throw new RuntimeException("Có lỗi xảy ra trong quá trình xóa dịch vụ!");
     }
@@ -110,7 +110,7 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public List<ServiceDTO> deleteAllIdService(List<Long> ids) {
         List<ServiceDTO> serviceDTOS = new ArrayList<>();
-        for(com.example.ttcn2etest.model.etity.Service service: serviceRepository.findAllById(ids)){
+        for (com.example.ttcn2etest.model.etity.Service service : serviceRepository.findAllById(ids)) {
             serviceDTOS.add(modelMapper.map(service, ServiceDTO.class));
         }
         serviceRepository.deleteAllByIdInBatch(ids);
@@ -121,6 +121,6 @@ public class StudyServiceImpl implements StudyService {
     public Page<com.example.ttcn2etest.model.etity.Service> filterService(FilterServiceRequest request, Date dateFrom, Date dateTo, BigDecimal maxPrice, BigDecimal minPrice) {
         Specification<com.example.ttcn2etest.model.etity.Service> specification = CustomServiceRepository.filterSpecification(dateFrom, dateTo, maxPrice, minPrice, request);
         Page<com.example.ttcn2etest.model.etity.Service> servicePage = serviceRepository.findAll(specification, PageRequest.of(request.getStart(), request.getLimit()));
-            return servicePage;
+        return servicePage;
     }
 }

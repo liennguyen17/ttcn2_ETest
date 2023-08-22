@@ -24,13 +24,22 @@ public class ConsultingRegistration {
     @NotBlank
     @Size(max = 100)
     private String name;
+    @NotBlank
     private String email;
+    @NotBlank
+    @Size(max = 15)
     private String phone;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Column(name = "content_advice")
     private String contentAdvice;
     @Column(name = "created_date")
     private Timestamp createdDate;
     @Column(name = "update_date")
     private Timestamp updateDate;
+
+    public  enum Status{
+        CONSULTED, WAITING_FOR_ADVICE   //da dc tu van, cho tu van
+    }
 
 }
