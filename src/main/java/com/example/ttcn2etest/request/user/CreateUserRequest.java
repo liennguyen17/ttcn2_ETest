@@ -5,10 +5,11 @@ import com.example.ttcn2etest.validator.EmailAnnotation;
 import com.example.ttcn2etest.validator.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -33,13 +34,13 @@ public class CreateUserRequest {
     private String email;
     @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
-    @NotNull(message = "Không được để trống Chỉ định người dùng có là Admin không? Nhập tùy chọn(1: có, 0: không)")
-    private Boolean isSuperAdmin = false;
-    @NotBlank(message = "Avatar không được để trống!")
+//    @NotNull(message = "Không được để trống Chỉ định người dùng có là Admin không? Nhập tùy chọn(1: có, 0: không)")
+    private Boolean isSuperAdmin;
+//    @NotBlank(message = "Avatar không được để trống!")
     @Size(max = 500)
     private String avatar;
-//    private String roleId;
 
-//    private Timestamp createdDate;
-//    private Timestamp updateDate;
+    private String roleId;
+    private List<Long> serviceIds; //"":[1,2,3]
+
 }

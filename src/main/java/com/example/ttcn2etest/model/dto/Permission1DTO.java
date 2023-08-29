@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role1DTO {
-    private String id;
+public class Permission1DTO {
+    private String permissionId;
     private String name;
-    private String description;
 }

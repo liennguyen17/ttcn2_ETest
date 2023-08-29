@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -37,8 +38,8 @@ public class User {
     @NotBlank
     private String email;
 
-    @Column(name = "password_no_encode", length = 100)
-    private String passwordNoEncode;
+//    @Column(name = "password_no_encode", length = 100)
+//    private String passwordNoEncode;
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
     private String address;
@@ -51,11 +52,15 @@ public class User {
     @Size(max = 500)
     private String avatar;
 
-//    @ManyToMany(mappedBy = "users")
-//    private Collection<Service> services;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "role_id")
-//    private Role role;
+    @ManyToMany
+    @JoinTable(
+            name = "user_service",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private Collection<Service> services;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 }

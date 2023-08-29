@@ -3,7 +3,11 @@ package com.example.ttcn2etest.service.user;
 import com.example.ttcn2etest.constant.DateTimeConstant;
 import com.example.ttcn2etest.exception.UsernameAlreadyExistsException;
 import com.example.ttcn2etest.model.dto.UserDTO;
+import com.example.ttcn2etest.model.etity.Role;
 import com.example.ttcn2etest.model.etity.User;
+import com.example.ttcn2etest.repository.UserServiceRepository;
+import com.example.ttcn2etest.repository.role.RoleRepository;
+import com.example.ttcn2etest.repository.service.ServiceRepository;
 import com.example.ttcn2etest.repository.user.CustomUserRepository;
 import com.example.ttcn2etest.repository.user.UserRepository;
 import com.example.ttcn2etest.request.user.CreateUserRequest;
@@ -13,39 +17,39 @@ import com.example.ttcn2etest.utils.MyUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final ServiceRepository serviceRepository;
+    private final UserServiceRepository userServiceRepository;
     private final ModelMapper modelMapper = new ModelMapper();
-
-    public UserServiceImpl(UserRepository userRepository) {
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, ServiceRepository serviceRepository, UserServiceRepository userServiceRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.serviceRepository = serviceRepository;
+        this.userServiceRepository = userServiceRepository;
     }
-//    private final PasswordEncoder encoder;
 
-//    public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
-//        this.userRepository = userRepository;
-//        this.encoder = encoder;
-//    }
 
     @Override
     public List<UserDTO> getAllUser() {
         return userRepository.findAll().stream().map(
                 user -> modelMapper.map(user, UserDTO.class)
-        ).collect(Collectors.toList());
+        ).toList();
     }
 
     @Override
@@ -62,9 +66,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO createUser(CreateUserRequest request) {
         try {
+            checkServiceIsValid(request.getServiceIds());
             if (userRepository.existsByUsername(request.getUsername())) {
                 throw new UsernameAlreadyExistsException("Tên người dùng đã tồn tại, nhập lại username khác!");
             }
+            checkRoleIsValid(request.getRoleId());
+            Optional<Role> roleOptional = roleRepository.findById(request.getRoleId());
             User user = User.builder()
                     .name(request.getName())
                     .username(request.getUsername())
@@ -72,7 +79,6 @@ public class UserServiceImpl implements UserService {
                     .email(request.getEmail())
 //                    .password(encoder.encode(request.getPassword()))
                     .password(request.getPassword())
-                    .passwordNoEncode(request.getPassword())
                     .address(request.getAddress())
                     .isSuperAdmin(false)
                     .phone(request.getPhone())
@@ -80,31 +86,39 @@ public class UserServiceImpl implements UserService {
                     .createdDate(new Timestamp(System.currentTimeMillis()))
                     .updateDate(new Timestamp(System.currentTimeMillis()))
                     .build();
-            user = userRepository.saveAndFlush(user);
-            return modelMapper.map(user, UserDTO.class);
+            List<com.example.ttcn2etest.model.etity.Service> services = buildService(request.getServiceIds());
+            user.setServices(services);
+            user.setRole(buildRole(roleOptional.get().getRoleId()));
+
+//            user = userRepository.saveAndFlush(user);
+            return modelMapper.map(userRepository.save(user), UserDTO.class);
         } catch (UsernameAlreadyExistsException ex) {
             throw ex;
         } catch (Exception ex) {
-            throw new RuntimeException("Có lỗi cảy ra trong quá tình tọa người dùng mới!");
+            throw new RuntimeException("Có lỗi xảy ra trong quá trình tọa người dùng mới!");
         }
     }
 
     @Override
     @Transactional
     public UserDTO updateUser(UpdateUserRequest request, Long id) throws ParseException {
+        checkServiceIsValid(request.getServices());
+        checkRoleIsValid(request.getRoleId());
+        Optional<Role> roleOptional = roleRepository.findById(request.getRoleId());
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
+            List<com.example.ttcn2etest.model.etity.Service> services = buildService(request.getServices());
             User user = userOptional.get();
             user.setUsername(request.getUsername());
             user.setName(request.getName());
             user.setDateOfBirth(MyUtils.convertDateFromString(request.getDateOfBirth(), DateTimeConstant.DATE_FORMAT));
             user.setEmail(request.getEmail());
             user.setPassword(request.getPassword());
-//            user.setPassword(encoder.encode(request.getPassword()));
-            user.setPasswordNoEncode(request.getPassword());
             user.setPhone(request.getPhone());
             user.setAvatar(request.getAvatar());
             user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+            user.setRole(buildRole(roleOptional.get().getRoleId()));
+            user.setServices(services);
             return modelMapper.map(userRepository.save(user), UserDTO.class);
         }
         throw new RuntimeException("Có lỗi xảy ra trong quá trình cập nhật thông tin người dùng!");
@@ -141,4 +155,53 @@ public class UserServiceImpl implements UserService {
         Page<User> userPage = userRepository.findAll(specification, PageRequest.of(request.getStart(), request.getLimit()));
         return userPage;
     }
+
+
+    private Role buildRole(String roleId){
+        return roleRepository.findById(roleId).orElseThrow(()-> new RuntimeException("Role không tồn tại!"));
+    }
+
+    private void checkRoleIsValid(String roleId){
+        if(roleId == null)
+            return;
+        Role role = buildRole(roleId);
+        if(role == null){
+            throw new RuntimeException("Role không tồn tại!");
+        }
+    }
+
+    private List<com.example.ttcn2etest.model.etity.Service> buildService(List<Long> serviceIds){
+        return serviceRepository.findAllById(serviceIds);
+    }
+
+    private void checkServiceIsValid(List<Long> serviceIds){
+        List<com.example.ttcn2etest.model.etity.Service> services = buildService(serviceIds);
+
+        if(CollectionUtils.isEmpty(services)){
+            throw new RuntimeException("Dịch vụ học không tồn tại!");
+        }
+        List<Long> listIdExists = services.stream().map(com.example.ttcn2etest.model.etity.Service::getId).toList();
+        List<Long> idNotExists = serviceIds.stream().filter(s->!listIdExists.contains(s)).toList();
+
+        if (!idNotExists.isEmpty()) {
+            StringBuilder errorMessage = new StringBuilder("Trong danh sách mã dịch vụ có mã không tồn tại trên hệ thống: ");
+            for (Long id : idNotExists) {
+                errorMessage.append(id).append(", ");
+            }
+            throw new RuntimeException(errorMessage.toString());
+        }
+    }
+
+    private void updateRoleForUser(User user, Role newRole){
+
+    }
+
+    private void updateServicesForUser(User user, List<com.example.ttcn2etest.model.etity.Service> newServices){
+        userServiceRepository.deleteByUserId(user.getId());
+
+        for(com.example.ttcn2etest.model.etity.Service newService : newServices){
+            com.example.ttcn2etest.model.etity.UserService userService = new com.example.ttcn2etest.model.etity.UserService();
+        }
+    }
+
 }

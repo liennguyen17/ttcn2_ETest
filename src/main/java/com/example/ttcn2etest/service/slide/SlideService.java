@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface SlideService {
-    List<SlideDTO> getAll();
+    List<SlideDTO> getAllSlide();
 
     SlideDTO getById(Long id);
 

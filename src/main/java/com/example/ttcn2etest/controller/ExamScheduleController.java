@@ -5,7 +5,7 @@ import com.example.ttcn2etest.model.etity.ExamSchedule;
 import com.example.ttcn2etest.request.examSchedule.CreateExamScheduleRequest;
 import com.example.ttcn2etest.request.examSchedule.FilterExamScheduleRequest;
 import com.example.ttcn2etest.request.examSchedule.UpdateExamScheduleRequest;
-import com.example.ttcn2etest.service.ExamScheduleService.ExamScheduleService;
+import com.example.ttcn2etest.service.examSchedule.ExamScheduleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class ExamScheduleController extends BaseController {
     @GetMapping("/all")
     ResponseEntity<?> getALLExamSchedule(){
         try {
-            List<ExamScheduleDTO> response = examScheduleService.getALLExamScheduleService();
+            List<ExamScheduleDTO> response = examScheduleService.getALLExamSchedule();
             return buildListItemResponse(response, response.size());
         }catch (Exception ex){
             return buildResponse();
@@ -37,33 +37,33 @@ public class ExamScheduleController extends BaseController {
 
     @GetMapping("/{id}")
     ResponseEntity<?> getByIdExamSchedule(@PathVariable Long id){
-        ExamScheduleDTO response = examScheduleService.getByIdExamScheduleService(id);
+        ExamScheduleDTO response = examScheduleService.getByIdExamSchedule(id);
         return buildItemResponse(response);
     }
 
     @PostMapping("")
     ResponseEntity<?> createExamSchedule(@Validated @RequestBody CreateExamScheduleRequest request){
-        ExamScheduleDTO response = examScheduleService.createExamScheduleService(request);
+        ExamScheduleDTO response = examScheduleService.createExamSchedule(request);
         return buildItemResponse(response);
     }
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateExamSchedule(@Validated @RequestBody UpdateExamScheduleRequest request,
                                                 @PathVariable("id") Long id){
-        ExamScheduleDTO response = examScheduleService.updateExamScheduleService(request, id);
+        ExamScheduleDTO response = examScheduleService.updateExamSchedule(request, id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteByIdExamSchedule(@PathVariable Long id){
-        ExamScheduleDTO response = examScheduleService.deleteByIdExamScheduleService(id);
+        ExamScheduleDTO response = examScheduleService.deleteByIdExamSchedule(id);
         return buildItemResponse(response);
     }
 
     @DeleteMapping("/delete/all")
     ResponseEntity<?> deleteAllExamSchedule(@RequestBody List<Long> ids){
         try{
-            List<ExamScheduleDTO> response = examScheduleService.deleteAllExamScheduleService(ids);
+            List<ExamScheduleDTO> response = examScheduleService.deleteAllExamSchedule(ids);
             return buildListItemResponse(response, response.size());
         }catch (Exception ex){
             return buildResponse();
@@ -72,7 +72,7 @@ public class ExamScheduleController extends BaseController {
 
     @PostMapping("/filter")
     public ResponseEntity<?> filterExamScheduleService(@Validated @RequestBody FilterExamScheduleRequest request){
-        Page<ExamSchedule> examSchedulePage = examScheduleService.filterExamScheduleService(request);
+        Page<ExamSchedule> examSchedulePage = examScheduleService.filterExamSchedule(request);
             List<ExamScheduleDTO> examScheduleDTOS = examSchedulePage.getContent().stream().map(
                     examSchedule -> modelMapper.map(examSchedule, ExamScheduleDTO.class)
             ).collect(Collectors.toList());

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,7 +19,7 @@ public class UserDTO {
     private Long userId;
     private String username;
     private String name;
-    private String passwordNoEncode;
+    private String password;
     @JsonFormat(pattern = DateTimeConstant.DATE_FORMAT, timezone = DateTimeConstant.TIME_ZONE)
     private Date dateOfBirth;
     private String phone;
@@ -30,6 +31,6 @@ public class UserDTO {
     private Timestamp createdDate;
     @JsonFormat(pattern = DateTimeConstant.DATE_TIME_FORMAT, timezone = DateTimeConstant.TIME_ZONE)
     private Timestamp updateDate;
-//    private Role1DTO role;
-//    private Service1DTO services;
+    private Role1DTO role;
+    private Set<Service1DTO> services;
 }

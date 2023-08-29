@@ -32,7 +32,7 @@ public class SlideController extends BaseController {
     @GetMapping("/all")
     ResponseEntity<?> getAllSlide() {
         try {
-            List<SlideDTO> response = slideService.getAll();
+            List<SlideDTO> response = slideService.getAllSlide();
             return buildListItemResponse(response, response.size());
         } catch (Exception ex) {
             return buildResponse();

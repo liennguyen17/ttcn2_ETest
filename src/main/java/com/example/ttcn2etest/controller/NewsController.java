@@ -32,7 +32,7 @@ public class NewsController extends BaseController {
     @GetMapping("/all")
     ResponseEntity<?> getAllId() {
         try {
-            List<NewsDTO> response = newsService.getAll();
+            List<NewsDTO> response = newsService.getAllNews();
             return buildListItemResponse(response, response.size());
         } catch (Exception ex) {
             return buildResponse();
@@ -58,7 +58,7 @@ public class NewsController extends BaseController {
         return buildItemResponse(response);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<?> deleteById(@PathVariable Long id) {
         NewsDTO response = newsService.deleteByIdNews(id);
         return buildItemResponse(response);

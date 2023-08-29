@@ -1,4 +1,4 @@
-package com.example.ttcn2etest.service.ExamScheduleService;
+package com.example.ttcn2etest.service.examSchedule;
 
 import com.example.ttcn2etest.model.dto.ExamScheduleDTO;
 import com.example.ttcn2etest.model.etity.ExamSchedule;
@@ -29,14 +29,14 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     }
 
     @Override
-    public List<ExamScheduleDTO> getALLExamScheduleService() {
+    public List<ExamScheduleDTO> getALLExamSchedule() {
         return examScheduleRepository.findAll().stream().map(
                 examSchedule -> modelMapper.map(examSchedule, ExamScheduleDTO.class)
         ).collect(Collectors.toList());
     }
 
     @Override
-    public ExamScheduleDTO getByIdExamScheduleService(Long id) {
+    public ExamScheduleDTO getByIdExamSchedule(Long id) {
         Optional<ExamSchedule> examScheduleOptional = examScheduleRepository.findById(id);
         if (examScheduleOptional.isPresent()) {
             return modelMapper.map(examScheduleOptional.get(), ExamScheduleDTO.class);
@@ -47,7 +47,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     }
 
     @Override
-    public ExamScheduleDTO createExamScheduleService(CreateExamScheduleRequest request) {
+    public ExamScheduleDTO createExamSchedule(CreateExamScheduleRequest request) {
         try {
             ExamSchedule examSchedule = ExamSchedule.builder()
                     .areaId(request.getAreaId())
@@ -72,7 +72,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     }
 
     @Override
-    public ExamScheduleDTO updateExamScheduleService(UpdateExamScheduleRequest request, Long id) {
+    public ExamScheduleDTO updateExamSchedule(UpdateExamScheduleRequest request, Long id) {
         Optional<ExamSchedule> examScheduleOptional = examScheduleRepository.findById(id);
         if (examScheduleOptional.isPresent()) {
             ExamSchedule examSchedule = examScheduleOptional.get();
@@ -93,7 +93,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     }
 
     @Override
-    public ExamScheduleDTO deleteByIdExamScheduleService(Long id) {
+    public ExamScheduleDTO deleteByIdExamSchedule(Long id) {
         if (!examScheduleRepository.existsById(id)) {
             throw new RuntimeException("Id: \"+id+\" cần xóa không tồn tại trong hệ thống!");
         }
@@ -106,7 +106,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     }
 
     @Override
-    public List<ExamScheduleDTO> deleteAllExamScheduleService(List<Long> ids) {
+    public List<ExamScheduleDTO> deleteAllExamSchedule(List<Long> ids) {
         List<ExamScheduleDTO> examScheduleDTOS = new ArrayList<>();
         for (Long id : ids) {
             Optional<ExamSchedule> examScheduleOptional = examScheduleRepository.findById(id);
@@ -122,7 +122,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     }
 
     @Override
-    public Page<ExamSchedule> filterExamScheduleService(FilterExamScheduleRequest request) {
+    public Page<ExamSchedule> filterExamSchedule(FilterExamScheduleRequest request) {
         Specification<ExamSchedule> specification = CustomExamScheduleRepository.filterSpecification(request);
         Page<ExamSchedule> examSchedules = examScheduleRepository.findAll(specification, PageRequest.of(request.getStart(), request.getLimit()));
         return examSchedules;

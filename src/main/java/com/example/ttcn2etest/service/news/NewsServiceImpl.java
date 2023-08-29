@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
+
+
     private final ModelMapper modelMapper = new ModelMapper();
 
     public NewsServiceImpl(NewsRepository newsRepository) {
@@ -31,7 +33,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<NewsDTO> getAll() {
+    public List<NewsDTO> getAllNews() {
         return newsRepository.findAll().stream().map(
                 news -> modelMapper.map(news, NewsDTO.class)
         ).collect(Collectors.toList());
@@ -72,6 +74,7 @@ public class NewsServiceImpl implements NewsService {
             News news = newsOptional.get();
             news.setName(request.getName());
             news.setContent(request.getContent());
+            news.setImage(request.getImage());
             news.setUpdateDate(new Timestamp(System.currentTimeMillis()));
             return modelMapper.map(newsRepository.saveAndFlush(news), NewsDTO.class);
         }

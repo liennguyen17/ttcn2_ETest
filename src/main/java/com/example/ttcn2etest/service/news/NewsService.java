@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface NewsService {
-    List<NewsDTO> getAll();
+    List<NewsDTO> getAllNews();
 
     NewsDTO getByIdNews(Long id);
 

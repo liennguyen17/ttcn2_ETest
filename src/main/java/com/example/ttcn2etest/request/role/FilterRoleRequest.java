@@ -2,7 +2,9 @@ package com.example.ttcn2etest.request.role;
 
 import com.example.ttcn2etest.validator.DateValidateAnnotation;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+@Data
 public class FilterRoleRequest {
     @NotNull(message = "Start không được để trống")
     private Integer start;

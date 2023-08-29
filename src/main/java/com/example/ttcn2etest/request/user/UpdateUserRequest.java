@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UpdateUserRequest {
     @NotBlank(message = "User name nguời dùng không được để trống!")
@@ -33,5 +35,7 @@ public class UpdateUserRequest {
     private Boolean isSuperAdmin = false;
     @NotBlank(message = "Avatar không được để trống!")
     private String avatar;
-//    private String role;
+
+    private String roleId;
+    private List<Long> services;
 }

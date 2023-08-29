@@ -13,9 +13,11 @@ import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
-@Table(name = "service")
+@Table(name = "service_manager")
 
 @Data
 @Builder
@@ -43,7 +45,7 @@ public class Service {
     private String curriculum;
     @Column(name = "learn_online_or_offline")
     @Enumerated(EnumType.STRING)
-    @Type(PostgreSQLEnumType.class)
+//    @Type(PostgreSQLEnumType.class)
     private Learn learnOnlineOrOffline;
     @Column(name = "course_price", precision = 10, scale = 2)
     private BigDecimal coursePrice;
@@ -57,7 +59,7 @@ public class Service {
     @Column(name = "update_date")
     private Timestamp updateDate;
     public enum TypeService {
-        EDUCATION_PROGRAM, REVIEW_LESSON, COURSE
+        EDUCATION_PROGRAM, REVIEW_LESSON, COURSE, NO_SERVICE
     }
     public enum Learn {
         ONLINE, OFFLINE, ONLINE_AND_OFFLINE
@@ -70,15 +72,10 @@ public class Service {
 //
 //    @OneToMany(mappedBy = "service")
 //    private Set<Course> courses;
-//
-//    @ManyToMany+
-//    @JoinTable(
-//            name = "user_service",
-//            joinColumns = @JoinColumn(
-//                    name = "service_id", referencedColumnName = "service_id"),
-//            inverseJoinColumns = @JoinColumn(
-//                    name = "user_id", referencedColumnName = "user_id"))
-//    private Collection<User> users;
 
+
+
+    @ManyToMany(mappedBy = "services")
+    private Collection<User> users;
 
 }

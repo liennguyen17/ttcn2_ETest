@@ -1,9 +1,6 @@
 package com.example.ttcn2etest.model.etity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -36,15 +35,15 @@ public class Role {
     @Column(name = "update_date")
     private Timestamp updateDate;
 
-//    @OneToMany(mappedBy = "role")
-//    private Set<User> users;
+    @OneToMany(mappedBy = "role")
+    private Set<User> users;
 //
-//    @ManyToMany
-//    @JoinTable(
-//            name = "roles_permissions",
-//            joinColumns = @JoinColumn(
-//                    name = "role_id", referencedColumnName = "role_id"),
-//            inverseJoinColumns = @JoinColumn(
-//                    name = "permission_id", referencedColumnName = "permission_id"))
-//    private Collection<Permission> permissions;
+    @ManyToMany
+    @JoinTable(
+            name = "roles_permissions",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "role_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "permission_id", referencedColumnName = "permission_id"))
+    private Collection<Permission> permissions;
 }

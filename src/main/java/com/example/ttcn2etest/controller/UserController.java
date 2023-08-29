@@ -24,9 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 public class UserController extends BaseController {
     private final UserService userService;
-
     private final ModelMapper modelMapper = new ModelMapper();
-
     public UserController(UserService userService) {
         this.userService = userService;
     }

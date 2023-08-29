@@ -31,7 +31,7 @@ public class SlideServiceImpl implements SlideService {
     }
 
     @Override
-    public List<SlideDTO> getAll() {
+    public List<SlideDTO> getAllSlide() {
         return slideRepository.findAll().stream().map(
                 slide -> modelMapper.map(slide, SlideDTO.class)
         ).collect(Collectors.toList());
