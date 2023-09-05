@@ -5,7 +5,6 @@ import com.example.ttcn2etest.exception.UsernameAlreadyExistsException;
 import com.example.ttcn2etest.model.dto.UserDTO;
 import com.example.ttcn2etest.model.etity.Role;
 import com.example.ttcn2etest.model.etity.User;
-import com.example.ttcn2etest.repository.UserServiceRepository;
 import com.example.ttcn2etest.repository.role.RoleRepository;
 import com.example.ttcn2etest.repository.service.ServiceRepository;
 import com.example.ttcn2etest.repository.user.CustomUserRepository;
@@ -34,14 +33,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ServiceRepository serviceRepository;
-    private final UserServiceRepository userServiceRepository;
+
     private final ModelMapper modelMapper = new ModelMapper();
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, ServiceRepository serviceRepository, UserServiceRepository userServiceRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, ServiceRepository serviceRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.serviceRepository = serviceRepository;
-        this.userServiceRepository = userServiceRepository;
     }
 
 
@@ -66,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO createUser(CreateUserRequest request) {
         try {
-            checkServiceIsValid(request.getServiceIds());
+            checkServiceIsValid(request.getServices());
             if (userRepository.existsByUsername(request.getUsername())) {
                 throw new UsernameAlreadyExistsException("Tên người dùng đã tồn tại, nhập lại username khác!");
             }
@@ -86,7 +84,7 @@ public class UserServiceImpl implements UserService {
                     .createdDate(new Timestamp(System.currentTimeMillis()))
                     .updateDate(new Timestamp(System.currentTimeMillis()))
                     .build();
-            List<com.example.ttcn2etest.model.etity.Service> services = buildService(request.getServiceIds());
+            List<com.example.ttcn2etest.model.etity.Service> services = buildService(request.getServices());
             user.setServices(services);
             user.setRole(buildRole(roleOptional.get().getRoleId()));
 
@@ -192,16 +190,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void updateRoleForUser(User user, Role newRole){
 
-    }
-
-    private void updateServicesForUser(User user, List<com.example.ttcn2etest.model.etity.Service> newServices){
-        userServiceRepository.deleteByUserId(user.getId());
-
-        for(com.example.ttcn2etest.model.etity.Service newService : newServices){
-            com.example.ttcn2etest.model.etity.UserService userService = new com.example.ttcn2etest.model.etity.UserService();
-        }
-    }
 
 }

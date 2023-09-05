@@ -28,7 +28,7 @@ public class DisplayManager {
     @Size(max = 5000)
     private String description;
     @NotBlank
-    @Size(max = 500)
+    @Size(max = 2000)
     private String image;
     @Size(max = 100)
     private String location;

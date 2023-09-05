@@ -13,9 +13,9 @@ public class CreateDisplayRequest {
     @Size(max = 500)
     private String description;
     @NotBlank(message = "Ảnh không được để trống!")
-    @Size(max = 500)
+    @Size(max = 2000, message = "Link ảnh có độ dài từ 0-2000 ký tự!")
     private String image;
     @NotBlank(message = "Vị trí không được để trống!")
-    @Size(max = 500)
+    @Size(max = 100)
     private String location;
 }

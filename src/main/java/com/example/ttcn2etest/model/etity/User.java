@@ -49,14 +49,14 @@ public class User {
     private Timestamp updateDate;
     @Column(name = "is_super_admin")
     private Boolean isSuperAdmin = false;
-    @Size(max = 500)
+    @Size(max = 2000)
     private String avatar;
 
     @ManyToMany
     @JoinTable(
             name = "user_service",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "service_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
     private Collection<Service> services;
 
     @ManyToOne

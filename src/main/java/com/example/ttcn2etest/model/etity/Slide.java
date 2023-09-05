@@ -20,7 +20,7 @@ public class Slide {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(max = 500)
+    @Size(max = 2000)
     private String image;
     @Size(max = 200)
     private String location;

@@ -75,7 +75,7 @@ public class DocumentController extends BaseController {
         }
     }
 
-    @DeleteMapping("/delete/all2")
+    @DeleteMapping("/delete/all")
     ResponseEntity<?> deleteAllIdDocument(@RequestBody List<Long> ids) {
         try {
             List<DocumentDTO> response = documentService.deleteAllIdDocument(ids);

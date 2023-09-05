@@ -24,6 +24,6 @@ public class FilterUserRequest {
     private String address;
     private String phone;
 //    private Boolean isSuperAdmin;
-//    private String roleId;
+    private String roleId;
 //    private String serviceId;
 }

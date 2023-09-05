@@ -120,6 +120,19 @@
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->
 <!--		</dependency>-->
 
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>9.2.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.0.1-jre</version>
+		</dependency>
+
 	</dependencies>
 
 

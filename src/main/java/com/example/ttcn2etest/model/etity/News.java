@@ -28,7 +28,7 @@ public class News {
     @NotBlank
     @Size(max = 5000)
     private String content;
-    @Size(max = 500)
+    @Size(max = 2000)
     private String image;
     @Column(name = "created_date")
     private Timestamp createdDate;

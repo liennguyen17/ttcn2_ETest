@@ -74,7 +74,6 @@ public class Service {
 //    private Set<Course> courses;
 
 
-
     @ManyToMany(mappedBy = "services")
     private Collection<User> users;
 

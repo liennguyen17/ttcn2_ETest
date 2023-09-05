@@ -49,7 +49,7 @@ public class DisplayServiceImpl implements DisplayService {
 
     @Override
     public DisplayManagerDTO createDisplay(CreateDisplayRequest request) {
-        try {
+//        try {
             DisplayManager displayManager = DisplayManager.builder()
                     .title(request.getTitle())
                     .image(request.getImage())
@@ -60,9 +60,9 @@ public class DisplayServiceImpl implements DisplayService {
                     .build();
             displayManager = displayManagerRepository.saveAndFlush(displayManager);
             return modelMapper.map(displayManager, DisplayManagerDTO.class);
-        } catch (Exception ex) {
-            throw new RuntimeException("Có lỗi xảy ra trong quá trình thêm mới!");
-        }
+//        } catch (Exception ex) {
+//            throw new RuntimeException("Có lỗi xảy ra trong quá trình thêm mới!");
+//        }
     }
 
     @Override

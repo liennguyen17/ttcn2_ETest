@@ -13,6 +13,7 @@ public class BaseController {
         BaseItemResponse<T> response = new BaseItemResponse<>();
         response.setData(data);
         response.setSuccess(true);
+        response.setStatusCode(200);
         return ResponseEntity.ok(response);
     }
 
@@ -20,6 +21,7 @@ public class BaseController {
         BaseListItemResponse<T> response = new BaseListItemResponse<>();
         response.setResult(data, total);
         response.setSuccess(true);
+        response.setStatusCode(200);
         return ResponseEntity.ok(response);
     }
 
@@ -27,6 +29,7 @@ public class BaseController {
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setSuccess(false);
         baseResponse.setFailed(ErrorCodeDefs.SERVER_ERROR, ErrorCodeDefs.getErrMsg(ErrorCodeDefs.SERVER_ERROR));
+        baseResponse.setStatusCode(500);
         return ResponseEntity.ok(baseResponse);
     }
 }

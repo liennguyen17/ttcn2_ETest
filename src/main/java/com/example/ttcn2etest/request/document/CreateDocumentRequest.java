@@ -17,10 +17,10 @@ public class CreateDocumentRequest {
     @Size(max = 5000)
     private String content;
     @NotBlank(message = "File không được để trống!")
-    @Size(max = 500)
+    @Size(max = 2000)
     private String file;
     @NotBlank(message = "Ảnh không được để trống!")
-    @Size(max = 500)
+    @Size(max = 2000, message = "Link ảnh có độ dài từ 0-2000 ký tự!")
     private String image;
     @NotNull(message = "Trạng thái không được để trống!")
     @Enumerated(EnumType.STRING)

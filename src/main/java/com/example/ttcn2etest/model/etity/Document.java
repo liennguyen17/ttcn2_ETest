@@ -27,9 +27,9 @@ public class Document {
     @NotBlank
     @Size(max = 5000)
     private String content;
-    @Size(max = 500)
+    @Size(max = 2000)
     private String file;
-    @Size(max = 500)
+    @Size(max = 2000)
     private String image;
     @Enumerated(EnumType.STRING)
     private Status status;  //tai lieu free hay khong free

@@ -34,6 +34,7 @@ public class UpdateUserRequest {
     @NotNull(message = "Không được để trống Chỉ định người dùng có là Admin không? Nhập tùy chọn(1: có, 0: không)")
     private Boolean isSuperAdmin = false;
     @NotBlank(message = "Avatar không được để trống!")
+    @Size(max = 1000)
     private String avatar;
 
     private String roleId;

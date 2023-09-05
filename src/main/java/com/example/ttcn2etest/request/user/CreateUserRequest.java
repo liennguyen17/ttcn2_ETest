@@ -4,6 +4,7 @@ import com.example.ttcn2etest.validator.DateValidateAnnotation;
 import com.example.ttcn2etest.validator.EmailAnnotation;
 import com.example.ttcn2etest.validator.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -28,19 +29,22 @@ public class CreateUserRequest {
     @NotBlank(message = "Số điện thoại không được để trống!")
     @PhoneNumber
     private String phone;
-    @NotBlank(message = "Email không được để trống!")
+
 //    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email không hợp lệ!")
+    @NotBlank(message = "Email không được để trống!")
     @EmailAnnotation
     private String email;
     @NotBlank(message = "Địa chỉ không được để trống!")
     private String address;
 //    @NotNull(message = "Không được để trống Chỉ định người dùng có là Admin không? Nhập tùy chọn(1: có, 0: không)")
     private Boolean isSuperAdmin;
-//    @NotBlank(message = "Avatar không được để trống!")
-    @Size(max = 500)
+    @NotBlank(message = "Avatar không được để trống!")
+    @Size(max = 2000, message = "Link ảnh có độ dài từ 0-2000 ký tự!")
     private String avatar;
-
+    @NotBlank(message = "Vai trò không được để trống!")
     private String roleId;
-    private List<Long> serviceIds; //"":[1,2,3]
+//    @NotNull(message = "Dịch vụ không để trống!")
+    @NotEmpty(message = "Dịch vụ không để trống!")
+    private List<Long> services; //"":[1,2,3]
 
 }
