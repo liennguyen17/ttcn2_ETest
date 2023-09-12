@@ -37,6 +37,7 @@ public class User {
     private String phone;
     @NotBlank
     private String email;
+    private boolean isVerified;
 
 //    @Column(name = "password_no_encode", length = 100)
 //    private String passwordNoEncode;

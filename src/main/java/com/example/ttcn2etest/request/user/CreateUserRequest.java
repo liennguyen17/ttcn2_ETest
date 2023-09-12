@@ -43,8 +43,8 @@ public class CreateUserRequest {
     private String avatar;
     @NotBlank(message = "Vai trò không được để trống!")
     private String roleId;
-//    @NotNull(message = "Dịch vụ không để trống!")
-    @NotEmpty(message = "Dịch vụ không để trống!")
+//    @NotEmpty(message = "Dịch vụ không để trống!")
     private List<Long> services; //"":[1,2,3]
+    private boolean isVerified;
 
 }

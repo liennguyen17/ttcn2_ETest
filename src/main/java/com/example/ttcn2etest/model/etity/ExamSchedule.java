@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "exam_schedule")
@@ -38,10 +39,12 @@ public class ExamSchedule {
     private String examMethod;
     @Column(name = "examination_object")
     private String examinationObject;
-    @Column(name = "examination_fee")
-    private String examinationFee;
-    @Column(name = "exam_registration_records")
-    private String examRegistrationRecords;
+    @Column(name = "examination_fee", columnDefinition = "TEXT")
+    @ElementCollection
+    private List<String> examinationFee;
+    @Column(name = "exam_registration_records", columnDefinition = "TEXT")
+    @ElementCollection
+    private List<String> examRegistrationRecords;
     @Column(name = "certification_time")
     private String certificationTime;
     @Column(name = "created_date")

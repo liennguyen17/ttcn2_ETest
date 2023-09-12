@@ -25,9 +25,14 @@ public class News {
     @NotBlank
     @Size(max = 200)
     private String name;
+
     @NotBlank
     @Size(max = 5000)
+    private String description;
+    @NotBlank
+    @Column(columnDefinition = "TEXT")
     private String content;
+
     @Size(max = 2000)
     private String image;
     @Column(name = "created_date")

@@ -36,7 +36,7 @@ public class UpdateUserRequest {
     @NotBlank(message = "Avatar không được để trống!")
     @Size(max = 1000)
     private String avatar;
-
     private String roleId;
     private List<Long> services;
+    private boolean isVerified;
 }

@@ -54,14 +54,19 @@ public class StudyServiceImpl implements StudyService {
             com.example.ttcn2etest.model.etity.Service service = com.example.ttcn2etest.model.etity.Service.builder()
                     .name(request.getName())
                     .description(request.getDescription())
+                    .detailDescription(request.getDetailDescription())
                     .studyGoals(request.getStudyGoals())
                     .schedule(request.getSchedule())
                     .numberTeachingSessions(request.getNumberTeachingSessions())
                     .curriculum(request.getCurriculum())
                     .learnOnlineOrOffline(request.getLearnOnlineOrOffline())
+                    .learningForm(request.getLearningForm())
                     .coursePrice(request.getCoursePrice())
+                    .price(request.getPrice())
                     .requestStudents(request.getRequestStudents())
                     .typeOfService(request.getTypeOfService())
+                    .image(request.getImage())
+                    .content(request.getContent())
                     .createdDate(new Timestamp(System.currentTimeMillis()))
                     .updateDate(new Timestamp(System.currentTimeMillis()))
                     .build();
@@ -80,13 +85,18 @@ public class StudyServiceImpl implements StudyService {
             com.example.ttcn2etest.model.etity.Service service = serviceOptional.get();
             service.setName(request.getName());
             service.setDescription(request.getDescription());
+            service.setDetailDescription(request.getDetailDescription());
             service.setStudyGoals(request.getStudyGoals());
             service.setSchedule(request.getSchedule());
             service.setNumberTeachingSessions(request.getNumberTeachingSessions());
             service.setCurriculum(request.getCurriculum());
             service.setLearnOnlineOrOffline(request.getLearnOnlineOrOffline());
+            service.setLearningForm(request.getLearningForm());
             service.setCoursePrice(request.getCoursePrice());
+            service.setPrice(request.getPrice());
             service.setTypeOfService(request.getTypeOfService());
+            service.setImage(request.getImage());
+            service.setContent(request.getContent());
             service.setUpdateDate(new Timestamp(System.currentTimeMillis()));
             return modelMapper.map(serviceRepository.save(service), ServiceDTO.class);
         }

@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
                     .username(request.getUsername())
                     .dateOfBirth(MyUtils.convertDateFromString(request.getDateOfBirth(), DateTimeConstant.DATE_FORMAT))
                     .email(request.getEmail())
+                    .isVerified(request.isVerified())
 //                    .password(encoder.encode(request.getPassword()))
                     .password(request.getPassword())
                     .address(request.getAddress())
@@ -111,6 +112,7 @@ public class UserServiceImpl implements UserService {
             user.setName(request.getName());
             user.setDateOfBirth(MyUtils.convertDateFromString(request.getDateOfBirth(), DateTimeConstant.DATE_FORMAT));
             user.setEmail(request.getEmail());
+            user.setVerified(request.isVerified());
             user.setPassword(request.getPassword());
             user.setPhone(request.getPhone());
             user.setAvatar(request.getAvatar());

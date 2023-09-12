@@ -4,9 +4,12 @@ import com.example.ttcn2etest.model.etity.ExamSchedule;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class CreateExamScheduleRequest {
@@ -28,10 +31,10 @@ public class CreateExamScheduleRequest {
     private String examMethod;
     @NotBlank(message = "Đối tượng thi không được để trống!")
     private String examinationObject;
-    @NotBlank(message = "Lệ phí thi không được để trống!")
-    private String examinationFee;
-    @NotBlank(message = "Hồ sơ đăng ký thi không được để trống!")
-    private String examRegistrationRecords;
+    @NotEmpty(message = "Lệ phí thi không được để trống!")
+    private List<String> examinationFee;
+    @NotEmpty(message = "Hồ sơ đăng ký thi không được để trống!")
+    private List<String> examRegistrationRecords;
     @NotBlank(message = "Thời gian cấp chứng nhận không được để trống!")
     private String certificationTime;
 }
